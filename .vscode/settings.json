@@ -1,0 +1,14 @@
+{
+  "cSpell.words": [
+    "cparagraph",
+    "csentence",
+    "ctitle",
+    "debuger",
+    "mockjs",
+    "nestjs",
+    "Parens"
+  ],
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}

@@ -4,8 +4,8 @@ import { IsNotExists } from 'src/validate/is-not-exists';
 
 export class RegisterDto {
   @IsNotEmpty({ message: '昵称不能为空' })
-  @IsNotExists('user', ['name'], { message: '昵称已经被占用' })
-  name: string;
+  @IsNotExists('user', ['nickname'], { message: '昵称已经被占用' })
+  nickname: string;
 
   @IsNotEmpty({ message: '密码不能为空' })
   @Matches(passwordRegExp, { message: '密码格式不正确' })

@@ -9,7 +9,7 @@ async function run() {
   for (let i = 0; i < 30; i++) {
     await prisma.user.create({
       data: {
-        name: Random.cname(),
+        nickname: Random.cname(),
         password: await hash(Random.string()),
         email: Random.email(),
         Question: {

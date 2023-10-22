@@ -13,7 +13,7 @@ datasource db {
 // 用户表
 model User {
   id       Int        @id @default(autoincrement())
-  name     String
+  nickname String
   email    String
   avatar   String?
   gender   String?

@@ -12,18 +12,23 @@ datasource db {
 
 // 用户表
 model User {
-  id       Int        @id @default(autoincrement())
-  nickname String
-  email    String
-  avatar   String?
-  gender   String?
-  password String
+  id           Int        @id @default(autoincrement())
+  nickname     String
+  email        String
+  avatar       String?
+  gender       String?
+  password     String
   // 创建日期
-  createAt DateTime   @default(now())
+  createAt     DateTime   @default(now())
   // 更新日期
-  updateAt DateTime   @updatedAt
+  updateAt     DateTime   @updatedAt
   // 问题
-  Question Question[]
+  Question     Question[]
+  // 个人简介
+  introduction String?
+  // 个人网站
+  website      String?
+  birthday     DateTime?
 }
 
 // 问题表

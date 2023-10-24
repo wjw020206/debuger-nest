@@ -13,7 +13,7 @@ import { extname } from 'path';
         return {
           storage: diskStorage({
             // 文件存储位置
-            destination: 'uploads/' + dayjs().format('YYYY/MM'),
+            destination: 'public/uploads/' + dayjs().format('YYYY/MM'),
             // 文件名定制
             filename: (req, file, callback) => {
               const path =

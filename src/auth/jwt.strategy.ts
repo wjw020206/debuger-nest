@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     });
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('用户未登录');
     }
 
     return user;

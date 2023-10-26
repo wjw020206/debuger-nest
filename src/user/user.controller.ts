@@ -5,6 +5,7 @@ import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from '@prisma/client';
 import { UserResponse } from './user.response';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserPasswordDto } from './dto/password.dto';
 
 @Controller('user')
 export class UserController {
@@ -18,7 +19,13 @@ export class UserController {
 
   @Patch('update')
   @Auth()
-  update(@Body() dto: UpdateUserDto, @CurrentUser() user: User) {
-    return this.userService.update(user.id, dto);
+  async update(@Body() dto: UpdateUserDto, @CurrentUser() user: User) {
+    await this.userService.update(user.id, dto);
+  }
+
+  @Patch('password')
+  @Auth()
+  async password(@Body() dto: UserPasswordDto, @CurrentUser() user: User) {
+    await this.userService.updatePassword(user.id, dto);
   }
 }

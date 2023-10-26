@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/common/prisma.service';
+import { UserPasswordDto } from './dto/password.dto';
+import { hash } from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -24,7 +26,14 @@ export class UserService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async updatePassword(id: number, dto: UserPasswordDto) {
+    return this.prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        password: await hash(dto.password)
+      }
+    });
   }
 }

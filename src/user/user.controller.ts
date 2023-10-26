@@ -6,6 +6,7 @@ import { User } from '@prisma/client';
 import { UserResponse } from './user.response';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserPasswordDto } from './dto/password.dto';
+import { UserEmailDto } from './dto/email.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,5 +28,11 @@ export class UserController {
   @Auth()
   async password(@Body() dto: UserPasswordDto, @CurrentUser() user: User) {
     await this.userService.updatePassword(user.id, dto);
+  }
+
+  @Patch('email')
+  @Auth()
+  async email(@Body() dto: UserEmailDto, @CurrentUser() user: User) {
+    await this.userService.updateEmail(user.id, dto);
   }
 }

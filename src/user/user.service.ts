@@ -3,6 +3,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/common/prisma.service';
 import { UserPasswordDto } from './dto/password.dto';
 import { hash } from 'argon2';
+import { UserEmailDto } from './dto/email.dto';
 
 @Injectable()
 export class UserService {
@@ -33,6 +34,17 @@ export class UserService {
       },
       data: {
         password: await hash(dto.password)
+      }
+    });
+  }
+
+  async updateEmail(id: number, dto: UserEmailDto) {
+    return this.prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        email: dto.email
       }
     });
   }

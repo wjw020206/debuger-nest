@@ -25,7 +25,10 @@ export class QuestionService {
     const pageCount = 10;
     const data = await this.prisma.question.findMany({
       skip: (page - 1) * pageCount,
-      take: pageCount
+      take: pageCount,
+      include: {
+        tags: true
+      }
     });
 
     return {

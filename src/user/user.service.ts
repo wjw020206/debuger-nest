@@ -8,8 +8,22 @@ import { UserEmailDto } from './dto/email.dto';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
-  findAll() {
-    return `This action returns all user`;
+
+  async findAll(page = 1) {
+    const pageCount = 36;
+    const data = await this.prisma.tag.findMany({
+      skip: (page - 1) * pageCount,
+      take: pageCount
+    });
+
+    return {
+      meta: {
+        page,
+        pageCount,
+        total: await this.prisma.tag.count()
+      },
+      data
+    };
   }
 
   findOne(id: number) {

@@ -113,4 +113,6 @@ model Tag {
   content   String
   questions Question[]
   users     User[]
+  // 创建日期
+  createAt  DateTime   @default(now())
 }

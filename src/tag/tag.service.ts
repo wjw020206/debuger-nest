@@ -11,22 +11,54 @@ export class TagService {
     return 'This action adds a new tag';
   }
 
-  async findAll(page = 1, search?: string) {
+  async findAll(
+    page = 1,
+    search?: string,
+    method: 'popular' | 'letter' | 'latest' = 'popular'
+  ) {
     const pageCount = 36;
 
     let data = null;
     let count = 0;
 
     if (search) {
-      data = await this.prisma.tag.findMany({
-        skip: (page - 1) * pageCount,
-        take: pageCount,
-        where: {
-          title: {
-            contains: search
+      if (method === 'latest') {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            title: {
+              contains: search
+            }
+          },
+          orderBy: {
+            createAt: 'desc'
           }
-        }
-      });
+        });
+      } else if (method === 'letter') {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            title: {
+              contains: search
+            }
+          },
+          orderBy: {
+            title: 'asc'
+          }
+        });
+      } else {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            title: {
+              contains: search
+            }
+          }
+        });
+      }
 
       count = await this.prisma.tag.count({
         where: {
@@ -36,10 +68,38 @@ export class TagService {
         }
       });
     } else {
-      data = await this.prisma.tag.findMany({
-        skip: (page - 1) * pageCount,
-        take: pageCount
-      });
+      if (method === 'latest') {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            title: {
+              contains: search
+            }
+          },
+          orderBy: {
+            createAt: 'desc'
+          }
+        });
+      } else if (method === 'letter') {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            title: {
+              contains: search
+            }
+          },
+          orderBy: {
+            title: 'asc'
+          }
+        });
+      } else {
+        data = await this.prisma.tag.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount
+        });
+      }
 
       count = await this.prisma.tag.count();
     }

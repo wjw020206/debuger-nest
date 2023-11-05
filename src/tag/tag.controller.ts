@@ -22,8 +22,12 @@ export class TagController {
   }
 
   @Get()
-  findAll(@Query('page') page: number, @Query('search') search?: string) {
-    return this.tagService.findAll(+page, search);
+  findAll(
+    @Query('page') page: number,
+    @Query('search') search?: string,
+    @Query('method') method?: 'popular' | 'letter' | 'latest'
+  ) {
+    return this.tagService.findAll(+page, search, method);
   }
 
   @Get(':id')

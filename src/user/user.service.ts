@@ -10,6 +10,7 @@ import { UserResponse } from './user.response';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  /** 获取用户列表(分页) */
   async findAll(page = 1, search?: string, method?: 'letter' | 'latest') {
     const pageCount = 36;
 
@@ -85,10 +86,7 @@ export class UserService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
+  /** 修改用户信息 */
   update(id: number, dto: UpdateUserDto) {
     return this.prisma.user.update({
       where: {
@@ -100,6 +98,7 @@ export class UserService {
     });
   }
 
+  /** 修改密码 */
   async updatePassword(id: number, dto: UserPasswordDto) {
     return this.prisma.user.update({
       where: {
@@ -111,6 +110,7 @@ export class UserService {
     });
   }
 
+  /** 修改邮箱 */
   async updateEmail(id: number, dto: UserEmailDto) {
     return this.prisma.user.update({
       where: {
@@ -122,6 +122,7 @@ export class UserService {
     });
   }
 
+  /** 注销用户 */
   async remove(id: number) {
     return this.prisma.user.delete({
       where: {
@@ -130,6 +131,7 @@ export class UserService {
     });
   }
 
+  /** 获取关注的标签 */
   async favoriteTags(id: number) {
     return this.prisma.user.findUnique({
       where: {
@@ -137,6 +139,22 @@ export class UserService {
       },
       select: {
         favoriteTags: true
+      }
+    });
+  }
+
+  /** 添加关注的标签 */
+  async addFavoriteTags(id: number, tagId: number) {
+    await this.prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        favoriteTags: {
+          connect: {
+            id: tagId
+          }
+        }
       }
     });
   }

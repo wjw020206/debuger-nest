@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Patch, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/auth/auth.decorator';
 import { CurrentUser } from 'src/auth/current-user.decorator';
@@ -7,6 +15,7 @@ import { UserResponse } from './user.response';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserPasswordDto } from './dto/password.dto';
 import { UserEmailDto } from './dto/email.dto';
+import { UserTagDto } from './dto/tag.dto';
 
 @Controller('user')
 export class UserController {
@@ -55,5 +64,17 @@ export class UserController {
   @Auth()
   async favoriteTags(@CurrentUser() user: User) {
     return this.userService.favoriteTags(user.id);
+  }
+
+  @Post('add-favorite-tags')
+  @Auth()
+  async addFavoriteTags(@CurrentUser() user: User, @Body() dto: UserTagDto) {
+    return this.userService.addFavoriteTags(user.id, +dto.tagId);
+  }
+
+  @Delete('remove-favorite-tags')
+  @Auth()
+  async removeFavoriteTags(@CurrentUser() user: User, @Body() dto: UserTagDto) {
+    return this.userService.addFavoriteTags(user.id, +dto.tagId);
   }
 }

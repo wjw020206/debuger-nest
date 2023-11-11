@@ -29,6 +29,9 @@ export class UserService {
           },
           orderBy: {
             createAt: 'desc'
+          },
+          include: {
+            favoriteTags: true
           }
         });
       } else if (method === 'letter') {
@@ -42,6 +45,9 @@ export class UserService {
           },
           orderBy: {
             nickname: 'asc'
+          },
+          include: {
+            favoriteTags: true
           }
         });
       }
@@ -60,6 +66,9 @@ export class UserService {
           take: pageCount,
           orderBy: {
             createAt: 'desc'
+          },
+          include: {
+            favoriteTags: true
           }
         });
       } else if (method === 'letter') {
@@ -68,6 +77,9 @@ export class UserService {
           take: pageCount,
           orderBy: {
             nickname: 'asc'
+          },
+          include: {
+            favoriteTags: true
           }
         });
       }

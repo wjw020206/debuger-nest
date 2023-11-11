@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Auth } from 'src/auth/auth.decorator';
 import { CurrentUser } from 'src/auth/current-user.decorator';
@@ -16,6 +16,15 @@ export class UserController {
   @Auth()
   info(@CurrentUser() user: User) {
     return new UserResponse(user).make();
+  }
+
+  @Get()
+  findAll(
+    @Query('page') page: number,
+    @Query('search') search?: string,
+    @Query('method') method?: 'letter' | 'latest'
+  ) {
+    return this.userService.findAll(+page, search, method);
   }
 
   @Patch('update')

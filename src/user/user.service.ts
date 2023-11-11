@@ -4,25 +4,84 @@ import { PrismaService } from 'src/common/prisma.service';
 import { UserPasswordDto } from './dto/password.dto';
 import { hash } from 'argon2';
 import { UserEmailDto } from './dto/email.dto';
+import { UserResponse } from './user.response';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(page = 1) {
+  async findAll(page = 1, search?: string, method?: 'letter' | 'latest') {
     const pageCount = 36;
-    const data = await this.prisma.tag.findMany({
-      skip: (page - 1) * pageCount,
-      take: pageCount
-    });
+
+    let data = null;
+    let count = 0;
+
+    if (search) {
+      if (method === 'latest') {
+        data = await this.prisma.user.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            nickname: {
+              contains: search
+            }
+          },
+          orderBy: {
+            createAt: 'desc'
+          }
+        });
+      } else if (method === 'letter') {
+        data = await this.prisma.user.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          where: {
+            nickname: {
+              contains: search
+            }
+          },
+          orderBy: {
+            nickname: 'asc'
+          }
+        });
+      }
+
+      count = await this.prisma.user.count({
+        where: {
+          nickname: {
+            contains: search
+          }
+        }
+      });
+    } else {
+      if (method === 'latest') {
+        data = await this.prisma.user.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          orderBy: {
+            createAt: 'desc'
+          }
+        });
+      } else if (method === 'letter') {
+        data = await this.prisma.user.findMany({
+          skip: (page - 1) * pageCount,
+          take: pageCount,
+          orderBy: {
+            nickname: 'asc'
+          }
+        });
+      }
+      count = await this.prisma.user.count();
+    }
 
     return {
       meta: {
         page,
         pageCount,
-        total: await this.prisma.tag.count()
+        total: count
       },
-      data
+      data: data?.map(item => {
+        return new UserResponse(item).make();
+      })
     };
   }
 

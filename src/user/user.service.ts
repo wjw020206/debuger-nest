@@ -144,14 +144,30 @@ export class UserService {
   }
 
   /** 添加关注的标签 */
-  async addFavoriteTags(id: number, tagId: number) {
+  async addFavoriteTags(userId: number, tagId: number) {
     await this.prisma.user.update({
       where: {
-        id
+        id: userId
       },
       data: {
         favoriteTags: {
           connect: {
+            id: tagId
+          }
+        }
+      }
+    });
+  }
+
+  /** 删除关注的标签 */
+  async removeFavoriteTags(userId: number, tagId: number) {
+    await this.prisma.user.update({
+      where: {
+        id: userId
+      },
+      data: {
+        favoriteTags: {
+          disconnect: {
             id: tagId
           }
         }

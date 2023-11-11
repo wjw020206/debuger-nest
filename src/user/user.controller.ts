@@ -75,6 +75,6 @@ export class UserController {
   @Delete('remove-favorite-tags')
   @Auth()
   async removeFavoriteTags(@CurrentUser() user: User, @Body() dto: UserTagDto) {
-    return this.userService.addFavoriteTags(user.id, +dto.tagId);
+    return this.userService.removeFavoriteTags(user.id, +dto.tagId);
   }
 }

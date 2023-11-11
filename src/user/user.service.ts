@@ -129,4 +129,15 @@ export class UserService {
       }
     });
   }
+
+  async favoriteTags(id: number) {
+    return this.prisma.user.findUnique({
+      where: {
+        id
+      },
+      select: {
+        favoriteTags: true
+      }
+    });
+  }
 }

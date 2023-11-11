@@ -50,4 +50,10 @@ export class UserController {
   async delete(@CurrentUser() user: User) {
     await this.userService.remove(user.id);
   }
+
+  @Get('favorite-tags')
+  @Auth()
+  async favoriteTags(@CurrentUser() user: User) {
+    return this.userService.favoriteTags(user.id);
+  }
 }

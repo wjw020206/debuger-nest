@@ -27,6 +27,13 @@ export class TagService {
           },
           orderBy: {
             createAt: 'desc'
+          },
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
+            }
           }
         });
       } else if (method === 'letter') {
@@ -40,6 +47,13 @@ export class TagService {
           },
           orderBy: {
             title: 'asc'
+          },
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
+            }
           }
         });
       } else {
@@ -49,6 +63,13 @@ export class TagService {
           where: {
             title: {
               contains: search
+            }
+          },
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
             }
           }
         });
@@ -73,6 +94,13 @@ export class TagService {
           },
           orderBy: {
             createAt: 'desc'
+          },
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
+            }
           }
         });
       } else if (method === 'letter') {
@@ -86,12 +114,32 @@ export class TagService {
           },
           orderBy: {
             title: 'asc'
+          },
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
+            }
           }
         });
       } else {
         data = await this.prisma.tag.findMany({
           skip: (page - 1) * pageCount,
-          take: pageCount
+          take: pageCount,
+          include: {
+            questions: {
+              select: {
+                id: true
+              }
+            }
+          },
+          orderBy: {
+            // 使用 count 聚合函数来按问题数量降序排序
+            questions: {
+              _count: 'desc'
+            }
+          }
         });
       }
 
@@ -106,13 +154,5 @@ export class TagService {
       },
       data
     };
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} tag`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tag`;
   }
 }
